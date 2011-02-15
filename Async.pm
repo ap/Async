@@ -25,6 +25,7 @@ sub new {
 		my $self = {
 			TASK => $task,
 			PID  => $pid,
+			PPID => $$,
 			PIPE => $r,
 			FD   => fileno $r,
 			DATA => '',
@@ -90,6 +91,7 @@ sub result {
 
 sub DESTROY {
 	my $self = shift;
+	return if $self->{'PPID'} != $$; # created in a different process
 	my $pid = $self->{'PID'};
 	local ( $., $@, $!, $^E, $? );
 	kill 9, $pid; # I don't care.

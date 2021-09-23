@@ -91,6 +91,7 @@ sub result {
 sub DESTROY {
 	my $self = shift;
 	my $pid = $self->{'PID'};
+	local ( $., $@, $!, $^E, $? );
 	kill 9, $pid; # I don't care.
 	waitpid $pid, 0;
 }

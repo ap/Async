@@ -7,7 +7,11 @@ my %META = (
 	prereqs     => {
 		configure => { requires => {qw( ExtUtils::MakeMaker 0 )} },
 		build     => { requires => {qw( ExtUtils::MakeMaker 0 )} },
+		runtime   => {
+			suggests => {qw( Storable 0 )},
+		},
 	},
+	dynamic_config => 0,
 	resources      => {
 		repository => { type => 'git', url => "git://$u.git", web => "https://$u" },
 		bugtracker => { web => "https://$u/issues" },

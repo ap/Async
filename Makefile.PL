@@ -4,6 +4,9 @@ my $u = 'github.com/ap/Async';
 
 my %META = (
 	name        => 'Async',
+	author      => 'Mark-Jason Dominus',
+	license     => 'unrestricted',
+	x_copyright => { holder => 'Mark-Jason Dominus', year => 2001 },
 	prereqs     => {
 		configure => { requires => {qw( ExtUtils::MakeMaker 0 )} },
 		build     => { requires => {qw( ExtUtils::MakeMaker 0 )} },
@@ -24,6 +27,10 @@ sub MY::postamble { -f 'META.yml' ? return : <<'' }
 create_distdir : MANIFEST
 MANIFEST :
 	( echo MANIFEST ; git ls-files ':!README.pod' ':!.gitblameignore' . ) > MANIFEST
+distdir : boilerplate
+.PHONY  : boilerplate
+boilerplate : distmeta
+	$(PERL) -Ilib boilerplate.pl $(DISTVNAME)
 
 ## BOILERPLATE ###############################################################
 require ExtUtils::MakeMaker;

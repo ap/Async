@@ -166,6 +166,8 @@ program can continue with whatever it was doing while the separate
 code is executing. This separate code is called an I<asynchronous
 computation>.
 
+=head1 INTERFACE
+
 To check if the asynchronous computation is complete you can call
 the C<ready()>
 method, which returns true if so, and false if it is still running.
@@ -271,9 +273,5 @@ program, and the C<result()> will be the empty string.
     # The result is not ready; we can go off and do something else here.
     sleep 1; # One thing we could do is to take nap.
   }
-
-=head1 AUTHOR
-
-Mark-Jason Dominus C<mjd-perl-async+@plover.com>.
 
 =cut

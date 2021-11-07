@@ -105,9 +105,7 @@ sub new {
 		return $msg if not defined $s and $@ eq "TIMEOUT\n";
 		return $s;
 	};
-	my $self = Async->new( $newtask );
-	return unless $self;
-	bless $self => AsyncTimeout;
+	$class->SUPER::new( $newtask );
 }
 
 package AsyncData;
@@ -120,9 +118,7 @@ sub new {
 		my $v = $task->();
 		return Storable::freeze( $v );
 	};
-	my $self = Async->new( $newtask );
-	return unless $self;
-	bless $self => AsyncData;
+	$class->SUPER::new( $newtask );
 }
 
 sub result {

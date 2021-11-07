@@ -136,6 +136,8 @@ sub result {
 
 1;
 
+__END__
+
 =head1 NAME
 
 Async - Asynchronous evaluation of Perl code (with optional timeouts)
@@ -158,12 +160,14 @@ Async - Asynchronous evaluation of Perl code (with optional timeouts)
 
 =head1 DESCRIPTION
 
-C<Async> executes some code in a separate process and retrieves the
+This module runs some code in a separate process and retrieves its
 result. Since the code is running in a separate process, your main
 program can continue with whatever it was doing while the separate
-code is executing. This separate code is called an `asynchronous
-computation'. When your program wants to check to see if the
-asynchronous computation is complete, it can call the C<ready()>
+code is executing. This separate code is called an I<asynchronous
+computation>.
+
+To check if the asynchronous computation is complete you can call
+the C<ready()>
 method, which returns true if so, and false if it is still running.
 
 After the asynchronous computation is complete, you should call the
@@ -173,7 +177,7 @@ and an error message otherwise.
 
 Data returned by the computation can be retrieved with the C<result()>
 method. The data must be a single string; any non-string value
-returned by the computation will be stringized. (See AsyncData below
+returned by the computation will be stringified. (See AsyncData below
 for how to avoid this.) If the computation has not completed yet,
 C<result()> will return an undefined value.
 
@@ -186,7 +190,7 @@ computation is complete before returning.
   use Async;
   $proc = AsyncTimeout->new( sub { ... }, $timeout, $special );
 
-C<Async::Timeout> implements a version of C<Async> that has an
+C<AsyncTimeout> implements a version of C<Async> that has an
 automatic timeout. If the asynchronous computation does not complete
 before C<$timeout> seconds have elapsed, it is forcibly terminated and
 returns a special value C<$special>. The default special value is the
@@ -217,7 +221,7 @@ The asynchronous computation takes place in a separate process, so
 nothing it does can affect the main program. For example, if it
 modifies global variables, changes the current directory, opens and
 closes filehandles, or calls C<die>, the parent process will be
-unaware of these things. However, the asynchronous computatin does
+unaware of these things. However, the asynchronous computation does
 inherit the main program's file handles, so if it reads data from
 files that the main program had open, that data will not be availble
 to the main program; similarly the asynchronous computation can write
@@ -233,7 +237,7 @@ The errors that are reported by the C<error()> mechanism are: those that are int
   Read error: (reason)
 
 If your asynchronous computation dies for any reason, that is not
-considered to be an `error'; that is the normal termination of the
+considered to be an I<error>; that is the normal termination of the
 process. Any messages written to C<STDERR> will go to the
 computation's C<STDERR>, which is normally inherited from the main
 program, and the C<result()> will be the empty string.

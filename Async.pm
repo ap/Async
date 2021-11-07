@@ -2,7 +2,7 @@ package Async;
 $VERSION = '0.10';
 
 sub new {
-	my ( $pack, $task ) = @_;
+	my ( $class, $task ) = ( shift, @_ );
 
 	my $r = \do { local *FH };
 	my $w = \do { local *FH };
@@ -26,7 +26,7 @@ sub new {
 			FD   => fileno $r,
 			DATA => '',
 		};
-		bless $self => $pack;
+		bless $self, $class;
 	} else { # child
 		close $r;
 		my $result = $task->();
@@ -38,7 +38,7 @@ sub new {
 # return true iff async process is complete
 # with true `$force' argmuent, wait until process is complete before returning
 sub ready {
-	my ( $self, $force ) = @_;
+	my ( $self, $force ) = ( shift, @_ );
 
 	my $timeout;
 	$timeout = 0 unless $force;
@@ -74,7 +74,7 @@ sub error { $_[0]{'ERROR'} }
 # return undef if it is incopmplete
 # a true $force argument waits for the process to complete before returning
 sub result {
-	my ( $self, $force ) = @_;
+	my ( $self, $force ) = ( shift, @_ );
 	if ( $self->{'FINISHED'} ) {
 		$self->{'DATA'};
 	} elsif ( $force ) {
@@ -86,7 +86,7 @@ sub result {
 }
 
 sub DESTROY {
-	my ( $self ) = @_;
+	my $self = shift;
 	my $pid = $self->{'PID'};
 	kill 9 => $pid; # I don't care.
 	waitpid $pid, 0;
@@ -96,7 +96,7 @@ package AsyncTimeout;
 @ISA = 'Async';
 
 sub new {
-	my ( $pack, $task, $timeout, $msg ) = @_;
+	my ( $class, $task, $timeout, $msg ) = ( shift, @_ );
 	$msg = "Timed out\n" unless defined $msg;
 	my $newtask = sub {
 		local $SIG{'ALRM'} = sub { die "TIMEOUT\n" };
@@ -115,7 +115,7 @@ package AsyncData;
 
 sub new {
 	require Storable;
-	my ( $pack, $task ) = @_;
+	my ( $class, $task ) = ( shift, @_ );
 	my $newtask = sub {
 		my $v = $task->();
 		return Storable::freeze( $v );

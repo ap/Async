@@ -11,7 +11,7 @@ sub new {
 		return;
 	}
 
-	my $pid = fork();
+	my $pid = fork;
 	unless ( defined $pid ) {
 		$ERROR = "Couldn't fork: $!";
 		return;
@@ -23,7 +23,7 @@ sub new {
 			TASK => $task,
 			PID  => $pid,
 			PIPE => $r,
-			FD   => fileno($r),
+			FD   => fileno $r,
 			DATA => '',
 		};
 		bless $self => $pack;
@@ -48,7 +48,7 @@ sub ready {
 	my $fdset = '';
 	vec( $fdset, $self->{FD}, 1 ) = 1;
 
-	while ( select( $fdset, undef, undef, $timeout ) ) {
+	while ( select $fdset, undef, undef, $timeout ) {
 		my $buf;
 		my $nr = read $self->{PIPE}, $buf, 8192;
 		if ( $nr ) {
@@ -89,7 +89,7 @@ sub DESTROY {
 	my ( $self ) = @_;
 	my $pid = $self->{PID};
 	kill 9 => $pid; # I don't care.
-	waitpid($pid, 0);
+	waitpid $pid, 0;
 }
 
 package AsyncTimeout;
@@ -102,7 +102,7 @@ sub new {
 		local $SIG{ALRM} = sub { die "TIMEOUT\n" };
 		alarm $timeout;
 		my $s = eval { $task->() };
-		return $msg if !defined($s) && $@ eq "TIMEOUT\n";
+		return $msg if not defined $s and $@ eq "TIMEOUT\n";
 		return $s;
 	};
 	my $self = Async->new( $newtask );

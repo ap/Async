@@ -14,6 +14,11 @@ my %META = (
 	},
 );
 
+sub MY::postamble { -f 'META.yml' ? return : <<'' }
+create_distdir : MANIFEST
+MANIFEST :
+	( echo MANIFEST ; git ls-files ':!README.pod' . ) > MANIFEST
+
 ## BOILERPLATE ###############################################################
 require ExtUtils::MakeMaker;
 

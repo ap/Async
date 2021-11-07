@@ -17,7 +17,8 @@ sub new {
   }
   if ($pid) {			# parent
     close $w;
-    my $self = { TASK => $task,
+    my $self = {
+		 TASK => $task,
 		 PID => $pid,
 		 PIPE => $r,
 		 FD => fileno($r),
@@ -60,9 +61,7 @@ sub ready {
 
 # Return error message if an error occurred
 # Return false if no error occurred 
-sub error {
-  $_[0]{ERROR};
-}
+sub error { $_[0]{ERROR} }
 
 # Return resulting data if async process is complete
 # return undef if it is incopmplete
@@ -92,14 +91,13 @@ package AsyncTimeout;
 sub new {
   my ($pack, $task, $timeout, $msg) = @_;
   $msg = "Timed out\n" unless defined $msg;
-  my $newtask = 
-    sub { 
+  my $newtask = sub {
       local $SIG{ALRM} = sub {  die "TIMEOUT\n"  };
       alarm $timeout; 
       my $s = eval {$task->()};
       return $msg if !defined($s) && $@ eq "TIMEOUT\n";
       return $s;
-    };
+  };
   my $self = Async->new($newtask);
   return unless $self;
   bless $self => AsyncTimeout;
@@ -111,11 +109,10 @@ package AsyncData;
 sub new {
   require Storable;
   my ($pack, $task) = @_;
-  my $newtask =
-    sub {
+  my $newtask = sub {
       my $v = $task->();
       return Storable::freeze($v);
-    };
+  };
   my $self = Async->new($newtask);
   return unless $self;
   bless $self => AsyncData;

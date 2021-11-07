@@ -1,4 +1,4 @@
-use strict; use warnings;
+use 5.006; use strict; use warnings;
 
 my $u = 'github.com/ap/Async';
 
@@ -8,6 +8,7 @@ my %META = (
 		configure => { requires => {qw( ExtUtils::MakeMaker 0 )} },
 		build     => { requires => {qw( ExtUtils::MakeMaker 0 )} },
 		runtime   => {
+			requires => {qw( perl 5.006 )},
 			suggests => {qw( Storable 0 )},
 		},
 		test => { requires => {qw( Test::More 0 )} },

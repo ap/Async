@@ -1,11 +1,14 @@
+use 5.006; use strict; no warnings;
+
 package Async;
-$VERSION = '0.10';
+our $VERSION = '0.10';
+
+our $ERROR;
 
 sub new {
 	my ( $class, $task ) = ( shift, @_ );
 
-	my $r = \do { local *FH };
-	my $w = \do { local *FH };
+	my ( $r, $w );
 	unless ( pipe $r, $w ) {
 		$ERROR = "Couldn't make pipe: $!";
 		return;
@@ -93,7 +96,7 @@ sub DESTROY {
 }
 
 package AsyncTimeout;
-@ISA = 'Async';
+our @ISA = 'Async';
 
 sub new {
 	my ( $class, $task, $timeout, $msg ) = ( shift, @_ );
@@ -109,7 +112,7 @@ sub new {
 }
 
 package AsyncData;
-@ISA = 'Async';
+our @ISA = 'Async';
 
 sub new {
 	require Storable;

@@ -1,10 +1,16 @@
 use strict; use warnings;
 
+my $u = 'github.com/ap/Async';
+
 my %META = (
 	name        => 'Async',
 	prereqs     => {
 		configure => { requires => {qw( ExtUtils::MakeMaker 0 )} },
 		build     => { requires => {qw( ExtUtils::MakeMaker 0 )} },
+	},
+	resources      => {
+		repository => { type => 'git', url => "git://$u.git", web => "https://$u" },
+		bugtracker => { web => "https://$u/issues" },
 	},
 );
 

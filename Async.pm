@@ -43,22 +43,22 @@ sub ready {
 	my $timeout;
 	$timeout = 0 unless $force;
 
-	return 1 if $self->{FINISHED};
+	return 1 if $self->{'FINISHED'};
 
 	my $fdset = '';
-	vec( $fdset, $self->{FD}, 1 ) = 1;
+	vec( $fdset, $self->{'FD'}, 1 ) = 1;
 
 	while ( select $fdset, undef, undef, $timeout ) {
 		my $buf;
-		my $nr = read $self->{PIPE}, $buf, 8192;
+		my $nr = read $self->{'PIPE'}, $buf, 8192;
 		if ( $nr ) {
-			$self->{DATA} .= $buf;
+			$self->{'DATA'} .= $buf;
 		} elsif ( defined $nr ) { # EOF
-			$self->{FINISHED} = 1;
+			$self->{'FINISHED'} = 1;
 			return 1;
 		} else {
-			$self->{ERROR} = "Read error: $!";
-			$self->{FINISHED} = 1;
+			$self->{'ERROR'} = "Read error: $!";
+			$self->{'FINISHED'} = 1;
 			return 1;
 		}
 	}
@@ -68,18 +68,18 @@ sub ready {
 
 # Return error message if an error occurred
 # Return false if no error occurred
-sub error { $_[0]{ERROR} }
+sub error { $_[0]{'ERROR'} }
 
 # Return resulting data if async process is complete
 # return undef if it is incopmplete
 # a true $force argument waits for the process to complete before returning
 sub result {
 	my ( $self, $force ) = @_;
-	if ( $self->{FINISHED} ) {
-		$self->{DATA};
+	if ( $self->{'FINISHED'} ) {
+		$self->{'DATA'};
 	} elsif ( $force ) {
 		$self->ready( 'force completion' );
-		$self->{DATA};
+		$self->{'DATA'};
 	} else {
 		return;
 	}
@@ -87,7 +87,7 @@ sub result {
 
 sub DESTROY {
 	my ( $self ) = @_;
-	my $pid = $self->{PID};
+	my $pid = $self->{'PID'};
 	kill 9 => $pid; # I don't care.
 	waitpid $pid, 0;
 }
@@ -99,7 +99,7 @@ sub new {
 	my ( $pack, $task, $timeout, $msg ) = @_;
 	$msg = "Timed out\n" unless defined $msg;
 	my $newtask = sub {
-		local $SIG{ALRM} = sub { die "TIMEOUT\n" };
+		local $SIG{'ALRM'} = sub { die "TIMEOUT\n" };
 		alarm $timeout;
 		my $s = eval { $task->() };
 		return $msg if not defined $s and $@ eq "TIMEOUT\n";

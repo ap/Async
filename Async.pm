@@ -78,7 +78,7 @@ sub result {
 	if ( $self->{'FINISHED'} ) {
 		$self->{'DATA'};
 	} elsif ( $force ) {
-		$self->ready( 'force completion' );
+		$self->ready( $force );
 		$self->{'DATA'};
 	} else {
 		return;

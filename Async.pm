@@ -88,7 +88,7 @@ sub result {
 sub DESTROY {
 	my $self = shift;
 	my $pid = $self->{'PID'};
-	kill 9 => $pid; # I don't care.
+	kill 9, $pid; # I don't care.
 	waitpid $pid, 0;
 }
 

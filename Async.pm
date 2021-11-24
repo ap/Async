@@ -1,7 +1,8 @@
 use 5.006; use strict; no warnings;
 
 package Async;
-our $VERSION = '0.10';
+
+our $VERSION = '0.11';
 
 our $ERROR;
 
@@ -101,6 +102,8 @@ sub DESTROY {
 package AsyncTimeout;
 our @ISA = 'Async';
 
+our $VERSION = '0.11';
+
 sub new {
 	my ( $class, $task, $timeout, $msg ) = ( shift, @_ );
 	$msg = "Timed out\n" unless defined $msg;
@@ -116,6 +119,8 @@ sub new {
 
 package AsyncData;
 our @ISA = 'Async';
+
+our $VERSION = '0.11';
 
 sub new {
 	require Storable;

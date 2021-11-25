@@ -19,7 +19,7 @@ my %META = (
 	dynamic_config => 0,
 	resources      => {
 		repository => { type => 'git', url => "git://$u.git", web => "https://$u" },
-		bugtracker => { web => "https://$u/issues" },
+		bugtracker => { web => 'https://rt.cpan.org/Public/Dist/Display.html?Name=Async' },
 	},
 );
 

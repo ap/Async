@@ -1,5 +1,8 @@
 Release history for Async
 
+0.12  2021-11-25
+      - Corrected DESTROY tests
+
 0.11  2021-11-24
       - Parentage tracking to keep Async processes from killing their siblings. [RT #65738]
         Thanks to Sander De Dycker

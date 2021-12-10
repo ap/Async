@@ -5,9 +5,8 @@ use Test::More;
 BEGIN { # compat shim for old Test::More
 	defined &BAIL_OUT or *BAIL_OUT = sub {
 		my $t = Test::Builder->new;
-		$t->_print( "Bail out!  $_[0]" );
 		$t->no_ending(1);
-		exit 255;
+		$t->BAILOUT(@_);
 	};
 }
 

@@ -1,5 +1,10 @@
 Release history for Async
 
+0.13  2022-08-07
+      - No functional changes
+      - Improved Test::More backcompat shim. Thanks to Sven Willenbücher
+      - Updated packaging and package metadata
+
 0.12  2021-11-25
       - Corrected DESTROY tests
 

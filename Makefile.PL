@@ -8,17 +8,25 @@ my %META = (
 	author      => 'Mark-Jason Dominus',
 	license     => 'unrestricted',
 	x_copyright => { holder => 'Mark-Jason Dominus', year => 2001 },
-	prereqs     => {
-		runtime   => {
-			requires => {qw( perl 5.006 )},
-			suggests => {qw( Storable 0 )},
-		},
-		test => { requires => {qw( Test::More 0 )} },
-	},
-	dynamic_config => 0,
-	resources      => {
+	resources   => {
 		repository => { type => 'git', url => "$sc.git", web => $sc },
 		bugtracker => { web => $bt },
+	},
+	dynamic_config => 0,
+	prereqs => {
+		runtime => {
+			requires => {qw(
+				perl 5.006
+			)},
+			suggests => {qw(
+				Storable 0
+			)},
+		},
+		test => {
+			requires => {qw(
+				Test::More 0
+			)},
+		},
 	},
 );
 

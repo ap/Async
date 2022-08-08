@@ -1,5 +1,9 @@
 Release history for Async
 
+0.14  Tue 09 Aug 2022
+      - No functional changes
+      - Packaging fix to stop installing boilerplate.pl
+
 0.13  Sun 07 Aug 2022
       - No functional changes
       - Improved Test::More backcompat shim. Thanks to Sven Willenbücher

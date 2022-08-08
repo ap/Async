@@ -28,9 +28,10 @@ $file{'LICENSE'} = trimnl $license->fulltext;
 
 my ( $main_module ) = map { s!-!/!g; s!^!lib/! if -d 'lib'; -f "$_.pod" ? "$_.pod" : "$_.pm" } $meta->name;
 
-( $file{ $main_module } = slurp $main_module ) =~ s{(?=^=cut\n\z)}{ join "\n\n", (
-	'=head1 AUTHOR', trimnl( $meta->authors ),
-	'=head1 COPYRIGHT AND LICENSE', trimnl( $license->notice ),
+( $file{ $main_module } = slurp $main_module ) =~ s{(^=cut\s*\z)}{ join "\n", (
+	"=head1 AUTHOR\n", trimnl( $meta->authors ),
+	"=head1 COPYRIGHT AND LICENSE\n", trimnl( $license->notice ),
+	"=cut\n",
 ) }me;
 
 die unless -e 'Makefile.PL';
